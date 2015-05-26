@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mock_Banking</string>
+
+    <string name="hello_world">Hello Mock Banking</string>
+    <string name="action_go">Go</string>
+    <string name="activity_main_title">Main</string>
+    <string name="activity_second_title">Second</string>
+    <string name="action_go_main">Go Main</string>
+    <string name="action_go_second">Go Second</string>
+    <string name="action_settings">Settings</string>
+</resources>
