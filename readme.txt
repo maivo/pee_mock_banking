@@ -1,2 +1,2 @@
-Shows how to nagivate from one activity to another and back.
-evernote: android, Navigate one activity to 2nd activity and back
+Shows how to store and retrieve data into application context
+evernote: android, how put data inside application context
