@@ -24,8 +24,8 @@ public class MainActivity extends Activity {
         final AppSession appSession = (AppSession) getApplicationContext();
 
         //Set name and email in global/application context
-        appSession.setUserName("phonger");
-        appSession.setPassword("atbatb972A");
+        appSession.setUserName("");
+        appSession.setPassword("");
     }
 
     @Override
