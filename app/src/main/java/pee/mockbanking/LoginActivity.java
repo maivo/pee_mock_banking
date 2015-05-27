@@ -14,14 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import pee.mockbanking.R;
 
+public class LoginActivity extends Activity {
 
-public class MainActivity extends Activity {
-
-
-    private static final String TAG = "MainActivity";
-
+    private static final String TAG = "LoginActivity";
     private EditText username;
     private EditText password;
     private Button login;
@@ -30,12 +26,17 @@ public class MainActivity extends Activity {
     private TextView numberOfRemainingLoginAttemptsTV;
     int numberOfRemainingLoginAttempts = 3;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
+        // Calling Application class (see application tag in AndroidManifest.xml)
+        final AppSession appSession = (AppSession) getApplicationContext();
+
+        //Set name and email in global/application context
+        appSession.setUserName("maivo");
+        appSession.setPassword("test");
         setupVariables();
     }
 

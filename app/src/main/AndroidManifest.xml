@@ -11,16 +11,18 @@
         <activity
             android:name="pee.mockbanking.MainActivity"
             android:label="@string/activity_main_title" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="pee.mockbanking.SecondActivity"
-            android:label="@string/activity_second_title" >
-
+            android:label="@string/activity_second_title">
+        </activity>
+        <activity
+            android:name="pee.mockbanking.LoginActivity"
+            android:label="@string/activity_login_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,2 +1,4 @@
-Shows how to store and retrieve data into application context
-evernote: android, how put data inside application context
+hello_login
+
+follow along this tutorial to create login screen
+http://examples.javacodegeeks.com/android/android-login-example/
