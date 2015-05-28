@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,10 +77,42 @@ public class LoginActivity extends Activity {
 
     public void onSignIn(View view) {
         Log.i(TAG, "inside onSignIn");
+
+        //clear error
+        etUserName.setError(null);
+        etPassword.setError(null);
+
         String userName = etUserName.getText().toString();
         String password = etPassword.getText().toString();
         Log.i(TAG, "userName: "+userName);
         Log.i(TAG, "password: "+password);
+
+        boolean isUserNameInvalid = false;
+        boolean isPasswordInvalid = false;
+
+        //validateUserName
+        if (TextUtils.isEmpty(userName)) {
+            Log.i(TAG, "TextUtils.isEmpty(userName)");
+            etUserName.setError(getString(R.string.input_empty));
+            isUserNameInvalid = true;
+        }
+
+        //validatePassword
+        if (TextUtils.isEmpty(password)) {
+            Log.i(TAG, "TextUtils.isEmpty(password)");
+            etPassword.setError(getString(R.string.input_empty));
+            isPasswordInvalid = true;
+
+        }
+        if(isUserNameInvalid){
+            etUserName.requestFocus();
+            return;
+        }
+
+        if(isPasswordInvalid){
+            etPassword.requestFocus();
+            return;
+        }
     }
 
 }
