@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Authentication Required"
+        android:text="Mock Banking. Authentication Required"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView

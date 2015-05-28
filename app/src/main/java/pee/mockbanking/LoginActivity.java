@@ -55,7 +55,7 @@ public class LoginActivity extends Activity {
         int id = item.getItemId();
 
         if (id == R.id.action_go) {
-            handleGoSecondActivity();
+            //handleGoSecondActivity();
             return true;
         }
 
@@ -67,17 +67,7 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleGoSecondActivity(){
-        Log.i(TAG, "inside handleGoSecondActivity");
-        Intent intent = new Intent(this, SecondActivity.class);
 
-        // calling an activity using <intent-filter> action name
-        //  Intent intent = new Intent("com.hmkcode.android.ANOTHER_ACTIVITY");
-
-        startActivity(intent);
-
-
-    }
 
     private void setupVariables() {
         username = (EditText) findViewById(R.id.usernameET);

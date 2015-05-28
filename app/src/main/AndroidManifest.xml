@@ -9,16 +9,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="pee.mockbanking.MainActivity"
-            android:label="@string/activity_main_title" >
-        </activity>
-        <activity
-            android:name="pee.mockbanking.SecondActivity"
-            android:label="@string/activity_second_title">
-        </activity>
-        <activity
             android:name="pee.mockbanking.LoginActivity"
-            android:label="@string/activity_login_title">
+            android:label="Mock Banking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
