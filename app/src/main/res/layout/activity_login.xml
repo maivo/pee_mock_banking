@@ -6,7 +6,10 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".LoginActivity">
+                tools:context=".LoginActivity"
+
+                android:background="#ffffff">
+
 
     <TextView
         android:id="@+id/textView1"
@@ -15,89 +18,49 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Mock Banking. Authentication Required"
+        android:text="Welcome to Mock Banking01"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="75dp"
-        android:layout_marginLeft="10dp"
-        android:text="Username:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_centerInParent="false"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        >
 
-    <EditText
-        android:id="@+id/usernameET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginLeft="35dp"
-        android:layout_toRightOf="@+id/textView2"
-        android:hint="supermode75" >
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="40dp"
-        android:text="Password:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/passwordET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/usernameET"
-        android:layout_alignRight="@+id/usernameET"
-        android:hint="testpass"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/attemptsLeftTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="48dp"
-        android:text="Attempts Left:"
-        android:visibility="invisible"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/loginBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordET"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="94dp"
-        android:onClick="authenticateLogin"
-        android:text="Login" />
-
-    <TextView
-        android:id="@+id/numberOfRemainingLoginAttemptsTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_alignTop="@+id/attemptsLeftTV"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/loginLockedTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginBtn"
-        android:layout_marginTop="35dp"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="invisible" />
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_default_bg"
+            android:padding="10dp"
+            android:hint="User Name"
+            android:textColorHint="#bbbbbb"
+            android:drawableLeft="@drawable/user"/>
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_bottom_bg"
+            android:layout_marginTop="-2dp"
+            android:padding="10dp"
+            android:hint="Password"
+            android:textColorHint="#bbbbbb"
+            android:password="true"
+            android:drawableLeft="@drawable/password"/>
+        <Button
+            android:id="@+id/bLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="4dp"
+            android:text="Sign In"
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="onLogin"
+            android:background="@drawable/button_default_bg"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

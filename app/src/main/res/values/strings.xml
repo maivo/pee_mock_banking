@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mock_Banking</string>
+    <string name="app_name">aMock Banking</string>
 
     <string name="hello_world">Hello Mock Banking</string>
     <string name="hello_login">Hello Login</string>

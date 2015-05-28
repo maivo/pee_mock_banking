@@ -14,13 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import pee.mockbanking.R;
+
 
 public class LoginActivity extends Activity {
 
-    private static final String TAG = "LoginActivity";
-    private EditText username;
-    private EditText password;
-    private Button login;
+    private static final String TAG = "SignUpActivity";
+    private EditText etUserName;
+    private EditText etPassword;
+    private Button bLogin;
     private TextView loginLockedTV;
     private TextView attemptsLeftTV;
     private TextView numberOfRemainingLoginAttemptsTV;
@@ -31,13 +33,29 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Calling Application class (see application tag in AndroidManifest.xml)
-        final AppSession appSession = (AppSession) getApplicationContext();
+        //set title
+        setTitle(R.string.activity_login_title);
 
-        //Set name and email in global/application context
-        appSession.setUserName("maivo");
-        appSession.setPassword("test");
-        setupVariables();
+        //
+        etUserName = (EditText) findViewById(R.id.etUserName);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        bLogin = (Button) findViewById(R.id.bLogin);
+
+        /*
+        bLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etUsername.getText().toString().equals("admin") &&
+                        etPassword.getText().toString().equals("admin")) {
+                    Toast.makeText(getApplicationContext(), "Hello admin!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Seems like you 're not admin!", Toast.LENGTH_SHORT).show();
+
+                }
+        }});*/
+
+
     }
 
     @Override
@@ -67,37 +85,17 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    private void setupVariables() {
-        username = (EditText) findViewById(R.id.usernameET);
-        password = (EditText) findViewById(R.id.passwordET);
-        login = (Button) findViewById(R.id.loginBtn);
-        loginLockedTV = (TextView) findViewById(R.id.loginLockedTV);
-        attemptsLeftTV = (TextView) findViewById(R.id.attemptsLeftTV);
-        numberOfRemainingLoginAttemptsTV = (TextView) findViewById(R.id.numberOfRemainingLoginAttemptsTV);
-        numberOfRemainingLoginAttemptsTV.setText(Integer.toString(numberOfRemainingLoginAttempts));
-    }
-
-    public void authenticateLogin(View view) {
-        if (username.getText().toString().equals("admin") &&
-                password.getText().toString().equals("admin")) {
+    public void onLogin(View view) {
+        Log.i(TAG, "inside onLogin");
+        Log.i(TAG, "etUserName.getText(): " + etUserName.getText());
+        Log.i(TAG, "etUserName.getText().toString(): "+etUserName.getText().toString());
+        if (etUserName.getText().toString().equals("admin") &&
+                etPassword.getText().toString().equals("admin")) {
             Toast.makeText(getApplicationContext(), "Hello admin!",
                     Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(), "Seems like you 're not admin!",
                     Toast.LENGTH_SHORT).show();
-            numberOfRemainingLoginAttempts--;
-            attemptsLeftTV.setVisibility(View.VISIBLE);
-            numberOfRemainingLoginAttemptsTV.setVisibility(View.VISIBLE);
-            numberOfRemainingLoginAttemptsTV.setText(Integer.toString(numberOfRemainingLoginAttempts));
-
-            if (numberOfRemainingLoginAttempts == 0) {
-                login.setEnabled(false);
-                loginLockedTV.setVisibility(View.VISIBLE);
-                loginLockedTV.setBackgroundColor(Color.RED);
-                loginLockedTV.setText("LOGIN LOCKED!!!");
-            }
         }
     }
 
