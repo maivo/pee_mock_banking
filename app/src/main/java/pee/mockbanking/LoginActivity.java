@@ -1,15 +1,22 @@
 package pee.mockbanking;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +30,9 @@ public class LoginActivity extends Activity {
     private static final String TAG = "SignUpActivity";
     private EditText etUserName;
     private EditText etPassword;
-    private Button bSignIn;
+    private Button btnSignIn;
+    private View progressView;
+    private View loginFormView;
 
 
     @Override
@@ -38,13 +47,16 @@ public class LoginActivity extends Activity {
         etUserName = (EditText) findViewById(R.id.etUserName);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
-        bSignIn = (Button) findViewById(R.id.bSignIn);
-        bSignIn.setOnClickListener(new View.OnClickListener() {
+        btnSignIn = (Button) findViewById(R.id.btnSignIn);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSignIn(view);
             }
         });
+
+        loginFormView = findViewById(R.id.login_form);
+        progressView = findViewById(R.id.pbLoginProgress);
 
     }
 
@@ -113,6 +125,62 @@ public class LoginActivity extends Activity {
             etPassword.requestFocus();
             return;
         }
+        //assert: have valid value for userName and password
+
+        //hide keyboard
+        hideKeyboard();
+
+        // show progress spinner, and start background task to login
+        showProgress(true);
+
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            loginFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+
+    private void hideKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+
 
 }
