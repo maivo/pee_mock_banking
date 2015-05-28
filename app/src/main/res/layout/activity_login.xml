@@ -51,7 +51,7 @@
             android:password="true"
             android:drawableLeft="@drawable/password"/>
         <Button
-            android:id="@+id/bLogin"
+            android:id="@+id/bSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"

@@ -22,11 +22,8 @@ public class LoginActivity extends Activity {
     private static final String TAG = "SignUpActivity";
     private EditText etUserName;
     private EditText etPassword;
-    private Button bLogin;
-    private TextView loginLockedTV;
-    private TextView attemptsLeftTV;
-    private TextView numberOfRemainingLoginAttemptsTV;
-    int numberOfRemainingLoginAttempts = 3;
+    private Button bSignIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +36,14 @@ public class LoginActivity extends Activity {
         //
         etUserName = (EditText) findViewById(R.id.etUserName);
         etPassword = (EditText) findViewById(R.id.etPassword);
-        bLogin = (Button) findViewById(R.id.bLogin);
 
-        /*
-        bLogin.setOnClickListener(new View.OnClickListener() {
+        bSignIn = (Button) findViewById(R.id.bSignIn);
+        bSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (etUsername.getText().toString().equals("admin") &&
-                        etPassword.getText().toString().equals("admin")) {
-                    Toast.makeText(getApplicationContext(), "Hello admin!",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Seems like you 're not admin!", Toast.LENGTH_SHORT).show();
-
-                }
-        }});*/
-
+            public void onClick(View view) {
+                onSignIn(view);
+            }
+        });
 
     }
 
@@ -85,18 +74,12 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onLogin(View view) {
-        Log.i(TAG, "inside onLogin");
-        Log.i(TAG, "etUserName.getText(): " + etUserName.getText());
-        Log.i(TAG, "etUserName.getText().toString(): "+etUserName.getText().toString());
-        if (etUserName.getText().toString().equals("admin") &&
-                etPassword.getText().toString().equals("admin")) {
-            Toast.makeText(getApplicationContext(), "Hello admin!",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Seems like you 're not admin!",
-                    Toast.LENGTH_SHORT).show();
-        }
+    public void onSignIn(View view) {
+        Log.i(TAG, "inside onSignIn");
+        String userName = etUserName.getText().toString();
+        String password = etPassword.getText().toString();
+        Log.i(TAG, "userName: "+userName);
+        Log.i(TAG, "password: "+password);
     }
 
 }
