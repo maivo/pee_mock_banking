@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://services.mbanking.sybase.com/schema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ns1:getMultifactorSecurityInfo>
+            <ns1:user>
+                <ns1:userId>{$userName}</ns1:userId>
+                <ns1:password>{$password}</ns1:password>
+                <ns1:type>consumer</ns1:type>
+                <ns1:locale>en_US</ns1:locale>
+                <ns1:channelName>WAP</ns1:channelName>
+                <ns1:extraMap size="3" >
+                    <ns1:entry ns1:key="MBVersion">2.0</ns1:entry>
+                    <ns1:entry ns1:key="GUID">cef90018-925f-473d-da9c-c471cbd7a25f</ns1:entry>
+                    <ns1:entry ns1:key="iphone">NO</ns1:entry>
+                </ns1:extraMap>
+                <ns1:profile-status>
+                    <ns1:enum-class>com.sybase.mbanking.profile.enums.ProfileStatus</ns1:enum-class>
+                    <ns1:enum-value>Active</ns1:enum-value>
+                </ns1:profile-status>
+            </ns1:user>
+        </ns1:getMultifactorSecurityInfo>
+    </soapenv:Body>
+</soapenv:Envelope>

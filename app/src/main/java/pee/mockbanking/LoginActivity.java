@@ -1,38 +1,53 @@
 package pee.mockbanking;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import pee.mockbanking.R;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.ResponseHandlerInterface;
+
+import org.apache.http.Header;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import pee.mockbanking.mb.AuthenticateUserResponse;
+import pee.mockbanking.mb.MbFailure;
+import pee.mockbanking.mb.MbFault;
+import pee.mockbanking.mb.MbClient;
+import pee.mockbanking.util.ActivityUtils;
 
 
 public class LoginActivity extends Activity {
 
     private static final String TAG = "SignUpActivity";
+
+    private static final String DUMMY_CREDENTIALS = "admin:admin";
     private EditText etUserName;
     private EditText etPassword;
+
     private Button btnSignIn;
     private View progressView;
     private View loginFormView;
+
+    private String userName;
+    private String password;
+
 
 
     @Override
@@ -94,8 +109,8 @@ public class LoginActivity extends Activity {
         etUserName.setError(null);
         etPassword.setError(null);
 
-        String userName = etUserName.getText().toString();
-        String password = etPassword.getText().toString();
+        userName = etUserName.getText().toString();
+        password = etPassword.getText().toString();
         Log.i(TAG, "userName: "+userName);
         Log.i(TAG, "password: "+password);
 
@@ -128,59 +143,154 @@ public class LoginActivity extends Activity {
         //assert: have valid value for userName and password
 
         //hide keyboard
-        hideKeyboard();
+        ActivityUtils.hideKeyboard(this);
 
         // show progress spinner, and start background task to login
-        showProgress(true);
-
+        ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, true);
+        Log.i(TAG, "calling handleSecurityServiceGetMultifactorSecurityInfo...");
+        handleSecurityServiceGetMultifactorSecurityInfo();
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            loginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+    private void handleSecurityServiceGetMultifactorSecurityInfo(){
+        Log.i(TAG, "inside handleSecurityServiceGetMultifactorSecurityInfo");
+        Context context = this.getApplicationContext();
+        String  endPoint = MbClient.SECURITY_SERVICE_ENDPOINT;
+        String  requestXml =  MbClient.getSecurityServiceGetMultifactorSecurityInfoRequestXml(context, userName, password);
+        Log.i(TAG, "requestXml: \n" + requestXml);
+        ResponseHandlerInterface responseHandler = new  MbSecurityServiceGetMultifactorSecurityInfoResponseHandler();
+        MbClient.post(context, endPoint, requestXml, responseHandler);
+    }
 
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    private void handleSecurityServiceAuthenticateUser(){
+        Context context = this.getApplicationContext();
+        String  endPoint = MbClient.SECURITY_SERVICE_ENDPOINT;
+        String  requestXml =  MbClient.getSecurityServiceAuthenticateUserRequestXml(context, userName, password);
+        Log.i(TAG, "requestXml: \n" + requestXml);
+        ResponseHandlerInterface responseHandler = new  MbSecurityServiceAuthenticateUserResponseHandler();
+        MbClient.post(context, endPoint, requestXml, responseHandler);
+    }
+
+
+    private class MbSecurityServiceAuthenticateUserResponseHandler extends AsyncHttpResponseHandler{
+
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            String responseXml = new String(bytes);
+            Log.i(TAG, "MbSecurityServiceAuthenticateUserResponseHandler.onSuccess. responseXml: \n" + responseXml);
+
+            //parse the authenticateUserResponse
+            AuthenticateUserResponse authenticateUserResponse = null;
+            InputStream inputStream = new ByteArrayInputStream(bytes);
+            MbSecurityServiceAuthenticateUserResponseParser parser = new MbSecurityServiceAuthenticateUserResponseParser();
+            authenticateUserResponse = parser.parse(inputStream);
+            Log.i(TAG, "authenticateUserResponse: \n" + authenticateUserResponse);
+
+            //add relevant info to appSession
+            final AppSession appSession = (AppSession) getApplicationContext();
+            appSession.setUserName(userName);
+            appSession.setPassword(password);
+            appSession.setChannelSessionId(authenticateUserResponse.getChannelSessionId());
+
+
+            //hide progress bar
+            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView,false);
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            handleMbFailure(bytes, throwable);
         }
     }
 
+    private class MbSecurityServiceAuthenticateUserResponseParser {
+        AuthenticateUserResponse authenticateUserResponse;
 
-    private void hideKeyboard() {
-        // Check if no view has focus:
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        private String text;
+
+        public MbSecurityServiceAuthenticateUserResponseParser() {
+            authenticateUserResponse = new AuthenticateUserResponse();
+        }
+
+
+
+        public AuthenticateUserResponse parse(InputStream is) {
+            XmlPullParserFactory factory = null;
+            XmlPullParser parser = null;
+            try {
+                factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(true);
+                parser = factory.newPullParser();
+
+                parser.setInput(is, null);
+
+                int eventType = parser.getEventType();
+                String employeeIndex = null;
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    String tagname = parser.getName();
+                    switch (eventType) {
+                        case XmlPullParser.TEXT:
+                            text = parser.getText();
+                            break;
+
+                        case XmlPullParser.END_TAG:
+                            if (tagname.equalsIgnoreCase("channelSessionId")) {
+                                // add employee object to list
+                                authenticateUserResponse.setChannelSessionId(text);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                    eventType = parser.next();
+                }
+
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return authenticateUserResponse;
         }
     }
 
+    private class MbSecurityServiceGetMultifactorSecurityInfoResponseHandler extends AsyncHttpResponseHandler{
+
+
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            String s = new String(bytes);
+            Log.i(TAG, "onSuccess08. s: \n" + s);
+            Log.i(TAG, "calling handleSecurityServiceAuthenticateUser...");
+            handleSecurityServiceAuthenticateUser();
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            handleMbFailure(bytes, throwable);
+        }
+    }
+
+    private void handleMbFailure(byte [] bytes, Throwable throwable){
+        MbFailure mbFailure = new MbFailure(bytes, throwable);
+        ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("Sign in Error")
+                .setMessage(mbFailure.getDetailMsg())
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
 
 
 }
+
+
+
+

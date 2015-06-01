@@ -8,6 +8,7 @@ import android.app.Application;
 public class AppSession extends Application {
     String mUserName;
     String mPassword;
+    String mChannelSessionId;
 
     public String getUserName() {
         return mUserName;
@@ -25,11 +26,20 @@ public class AppSession extends Application {
         mPassword = password;
     }
 
+    public String getChannelSessionId() {
+        return mChannelSessionId;
+    }
+
+    public void setChannelSessionId(String channelSessionId) {
+        mChannelSessionId = channelSessionId;
+    }
+
     @Override
     public String toString() {
         return "AppSession{" +
                 "mUserName='" + mUserName + '\'' +
                 ", mPassword='" + mPassword + '\'' +
+                ", mChannelSessionId='" + mChannelSessionId + '\'' +
                 '}';
     }
 }
