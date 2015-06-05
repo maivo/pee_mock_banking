@@ -27,9 +27,11 @@ import pee.mockbanking.util.AssetUtils;
 public class MbClient {
     private static final String TAG = "MbClient";
 
-    public static final String SECURITY_SERVICE_ENDPOINT ="https://www.atbmobile.com/mbanking/services/SecurityService/";
+    private static final String BASE_URL ="http://172.20.10.4:8080/mbmock";
 
-    public static String getSecurityServiceGetMultifactorSecurityInfoRequestXml(Context context, String userName, String password){
+
+
+    public static String getSsGetMultifactorSecurityInfoRequestXml(Context context, String userName, String password){
         String assetPath = "mb_securityService/securityService_getMultifactorSecurityInfo_request.cxml";
         String chunkTemplateContent = AssetUtils.getAssetContent(context, assetPath);
 
@@ -41,7 +43,7 @@ public class MbClient {
         return c.toString();
     }
 
-    public static String getSecurityServiceAuthenticateUserRequestXml(Context context, String userName, String password){
+    public static String getSsAuthenticateUserRequestXml(Context context, String userName, String password){
         String assetPath = "mb_securityService/securityService_authenticateUser_request.cxml";
         String chunkTemplateContent = AssetUtils.getAssetContent(context, assetPath);
         //get result

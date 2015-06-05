@@ -6,40 +6,61 @@ import android.app.Application;
  * Created by pvu_asus on 25/05/2015.
  */
 public class AppSession extends Application {
-    String mUserName;
-    String mPassword;
-    String mChannelSessionId;
+    String userName;
+    String password;
+    String channelSessionId;
+    String challengeQuestion;
+    String challengeQuestionId;
 
     public String getUserName() {
-        return mUserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        mUserName = userName;
+        this.userName = userName;
     }
 
     public String getPassword() {
-        return mPassword;
+        return password;
     }
 
     public void setPassword(String password) {
-        mPassword = password;
+        this.password = password;
     }
 
     public String getChannelSessionId() {
-        return mChannelSessionId;
+        return channelSessionId;
     }
 
     public void setChannelSessionId(String channelSessionId) {
-        mChannelSessionId = channelSessionId;
+        channelSessionId = channelSessionId;
+    }
+
+
+    public String getChallengeQuestion() {
+        return challengeQuestion;
+    }
+
+    public void setChallengeQuestion(String challengeQuestion) {
+        this.challengeQuestion = challengeQuestion;
+    }
+
+    public String getChallengeQuestionId() {
+        return challengeQuestionId;
+    }
+
+    public void setChallengeQuestionId(String challengeQuestionId) {
+        this.challengeQuestionId = challengeQuestionId;
     }
 
     @Override
     public String toString() {
         return "AppSession{" +
-                "mUserName='" + mUserName + '\'' +
-                ", mPassword='" + mPassword + '\'' +
-                ", mChannelSessionId='" + mChannelSessionId + '\'' +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", channelSessionId='" + channelSessionId + '\'' +
+                ", challengeQuestion='" + challengeQuestion + '\'' +
+                ", challengeQuestionId='" + challengeQuestionId + '\'' +
                 '}';
     }
 }

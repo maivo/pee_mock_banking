@@ -27,15 +27,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import pee.mockbanking.mb.AuthenticateUserResponse;
+import pee.mockbanking.mb.MbEndPoints;
 import pee.mockbanking.mb.MbFailure;
-import pee.mockbanking.mb.MbFault;
 import pee.mockbanking.mb.MbClient;
+import pee.mockbanking.mb.MbSsAuthenticateUserResponseParser;
 import pee.mockbanking.util.ActivityUtils;
 
 
 public class LoginActivity extends Activity {
 
-    private static final String TAG = "SignUpActivity";
+    private static final String TAG = "LoginActivity";
 
     private static final String DUMMY_CREDENTIALS = "admin:admin";
     private EditText etUserName;
@@ -143,10 +144,14 @@ public class LoginActivity extends Activity {
         //assert: have valid value for userName and password
 
         //hide keyboard
-        ActivityUtils.hideKeyboard(this);
+
 
         // show progress spinner, and start background task to login
         ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, true);
+
+        //hide keyboard
+        ActivityUtils.hideKeyboard(this);
+
         Log.i(TAG, "calling handleSecurityServiceGetMultifactorSecurityInfo...");
         handleSecurityServiceGetMultifactorSecurityInfo();
     }
@@ -154,9 +159,10 @@ public class LoginActivity extends Activity {
 
     private void handleSecurityServiceGetMultifactorSecurityInfo(){
         Log.i(TAG, "inside handleSecurityServiceGetMultifactorSecurityInfo");
+
         Context context = this.getApplicationContext();
-        String  endPoint = MbClient.SECURITY_SERVICE_ENDPOINT;
-        String  requestXml =  MbClient.getSecurityServiceGetMultifactorSecurityInfoRequestXml(context, userName, password);
+        String  endPoint = MbEndPoints.getInstance().getSsGetMultifactorSecurityInfo();
+        String  requestXml =  MbClient.getSsGetMultifactorSecurityInfoRequestXml(context, userName, password);
         Log.i(TAG, "requestXml: \n" + requestXml);
         ResponseHandlerInterface responseHandler = new  MbSecurityServiceGetMultifactorSecurityInfoResponseHandler();
         MbClient.post(context, endPoint, requestXml, responseHandler);
@@ -164,15 +170,16 @@ public class LoginActivity extends Activity {
 
     private void handleSecurityServiceAuthenticateUser(){
         Context context = this.getApplicationContext();
-        String  endPoint = MbClient.SECURITY_SERVICE_ENDPOINT;
-        String  requestXml =  MbClient.getSecurityServiceAuthenticateUserRequestXml(context, userName, password);
+
+        String  endPoint = MbEndPoints.getInstance().getSsGetAuthenticateUser();
+        String  requestXml =  MbClient.getSsAuthenticateUserRequestXml(context, userName, password);
         Log.i(TAG, "requestXml: \n" + requestXml);
-        ResponseHandlerInterface responseHandler = new  MbSecurityServiceAuthenticateUserResponseHandler();
+        ResponseHandlerInterface responseHandler = new MbSsAuthenticateUserResponseHandler();
         MbClient.post(context, endPoint, requestXml, responseHandler);
     }
 
 
-    private class MbSecurityServiceAuthenticateUserResponseHandler extends AsyncHttpResponseHandler{
+    private class MbSsAuthenticateUserResponseHandler extends AsyncHttpResponseHandler{
 
         @Override
         public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -182,77 +189,27 @@ public class LoginActivity extends Activity {
             //parse the authenticateUserResponse
             AuthenticateUserResponse authenticateUserResponse = null;
             InputStream inputStream = new ByteArrayInputStream(bytes);
-            MbSecurityServiceAuthenticateUserResponseParser parser = new MbSecurityServiceAuthenticateUserResponseParser();
+            MbSsAuthenticateUserResponseParser parser = new MbSsAuthenticateUserResponseParser();
             authenticateUserResponse = parser.parse(inputStream);
             Log.i(TAG, "authenticateUserResponse: \n" + authenticateUserResponse);
+
+            //hide progress bar
+            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
 
             //add relevant info to appSession
             final AppSession appSession = (AppSession) getApplicationContext();
             appSession.setUserName(userName);
             appSession.setPassword(password);
             appSession.setChannelSessionId(authenticateUserResponse.getChannelSessionId());
+            appSession.setChallengeQuestion(authenticateUserResponse.getChallengeQuestion());
+            appSession.setChallengeQuestionId(authenticateUserResponse.getChallengeQuestionId());
 
 
-            //hide progress bar
-            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView,false);
         }
 
         @Override
         public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
             handleMbFailure(bytes, throwable);
-        }
-    }
-
-    private class MbSecurityServiceAuthenticateUserResponseParser {
-        AuthenticateUserResponse authenticateUserResponse;
-
-        private String text;
-
-        public MbSecurityServiceAuthenticateUserResponseParser() {
-            authenticateUserResponse = new AuthenticateUserResponse();
-        }
-
-
-
-        public AuthenticateUserResponse parse(InputStream is) {
-            XmlPullParserFactory factory = null;
-            XmlPullParser parser = null;
-            try {
-                factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(true);
-                parser = factory.newPullParser();
-
-                parser.setInput(is, null);
-
-                int eventType = parser.getEventType();
-                String employeeIndex = null;
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    String tagname = parser.getName();
-                    switch (eventType) {
-                        case XmlPullParser.TEXT:
-                            text = parser.getText();
-                            break;
-
-                        case XmlPullParser.END_TAG:
-                            if (tagname.equalsIgnoreCase("channelSessionId")) {
-                                // add employee object to list
-                                authenticateUserResponse.setChannelSessionId(text);
-                            }
-                            break;
-
-                        default:
-                            break;
-                    }
-                    eventType = parser.next();
-                }
-
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return authenticateUserResponse;
         }
     }
 
