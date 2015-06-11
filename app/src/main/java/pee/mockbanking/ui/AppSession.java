@@ -1,4 +1,4 @@
-package pee.mockbanking;
+package pee.mockbanking.ui;
 
 import android.app.Application;
 
@@ -33,7 +33,7 @@ public class AppSession extends Application {
     }
 
     public void setChannelSessionId(String channelSessionId) {
-        channelSessionId = channelSessionId;
+        this.channelSessionId = channelSessionId;
     }
 
 

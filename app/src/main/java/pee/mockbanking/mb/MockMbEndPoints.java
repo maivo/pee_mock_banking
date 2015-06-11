@@ -11,7 +11,13 @@ public class MockMbEndPoints implements MbEndPointsI {
 
 
 
-
+    private void sleep(){
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public String getSsGetMultifactorSecurityInfo(){
         sleep();
@@ -24,15 +30,11 @@ public class MockMbEndPoints implements MbEndPointsI {
         return BASE_URL +"/securityService/authenticateUserResponse_challenge.xml";
     }
 
-
-    private void sleep(){
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-
+    public String getAsGetAccounts(){
+        return BASE_URL +"/accountService/getAccountsResponse.xml";
     }
+
+
+
 
 }

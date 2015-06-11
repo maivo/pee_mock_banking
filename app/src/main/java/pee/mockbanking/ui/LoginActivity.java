@@ -1,4 +1,4 @@
-package pee.mockbanking;
+package pee.mockbanking.ui;
 
 
 import android.app.Activity;
@@ -18,15 +18,15 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.ResponseHandlerInterface;
 
 import org.apache.http.Header;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
+import pee.mockbanking.R;
+import pee.mockbanking.mb.Account;
 import pee.mockbanking.mb.AuthenticateUserResponse;
+import pee.mockbanking.mb.MbAsGetAccountsResponseParser;
 import pee.mockbanking.mb.MbEndPoints;
 import pee.mockbanking.mb.MbFailure;
 import pee.mockbanking.mb.MbClient;
@@ -41,7 +41,6 @@ public class LoginActivity extends Activity {
     private static final String DUMMY_CREDENTIALS = "admin:admin";
     private EditText etUserName;
     private EditText etPassword;
-
     private Button btnSignIn;
     private View progressView;
     private View loginFormView;
@@ -178,6 +177,20 @@ public class LoginActivity extends Activity {
         MbClient.post(context, endPoint, requestXml, responseHandler);
     }
 
+    private void handleAccountServiceGetAccounts(){
+        Context context = this.getApplicationContext();
+        final AppSession appSession = (AppSession) getApplicationContext();
+        Log.i(TAG, "appSession: \n" + appSession);
+
+        String  endPoint = MbEndPoints.getInstance().getAsGetAccounts();
+        Log.i(TAG, "endPoint: \n" + endPoint);
+
+        String  requestXml =  MbClient.getAsGetAccountsRequestXml(context, appSession);
+        Log.i(TAG, "requestXml: \n" + requestXml);
+        ResponseHandlerInterface responseHandler = new MbAsGetAccountsResponseHandler();
+        MbClient.post(context, endPoint, requestXml, responseHandler);
+    }
+
 
     private class MbSsAuthenticateUserResponseHandler extends AsyncHttpResponseHandler{
 
@@ -193,9 +206,6 @@ public class LoginActivity extends Activity {
             authenticateUserResponse = parser.parse(inputStream);
             Log.i(TAG, "authenticateUserResponse: \n" + authenticateUserResponse);
 
-            //hide progress bar
-            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
-
             //add relevant info to appSession
             final AppSession appSession = (AppSession) getApplicationContext();
             appSession.setUserName(userName);
@@ -204,7 +214,9 @@ public class LoginActivity extends Activity {
             appSession.setChallengeQuestion(authenticateUserResponse.getChallengeQuestion());
             appSession.setChallengeQuestionId(authenticateUserResponse.getChallengeQuestionId());
 
-
+            //call getAccounts
+            Log.i(TAG, "calling mb.accountService.getAccounts...");
+            handleAccountServiceGetAccounts();
         }
 
         @Override
@@ -231,6 +243,7 @@ public class LoginActivity extends Activity {
     }
 
     private void handleMbFailure(byte [] bytes, Throwable throwable){
+        Log.e(TAG, "error", throwable);
         MbFailure mbFailure = new MbFailure(bytes, throwable);
         ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
         new AlertDialog.Builder(LoginActivity.this)
@@ -245,7 +258,33 @@ public class LoginActivity extends Activity {
                 .show();
     }
 
+    private class MbAsGetAccountsResponseHandler extends AsyncHttpResponseHandler {
 
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            String responseXml = new String(bytes);
+            Log.i(TAG, "MbAsGetAccountsResponseHandler.onSuccess. responseXml: \n" + responseXml);
+
+            List<Account> accountList = null;
+            InputStream inputStream = new ByteArrayInputStream(bytes);
+            MbAsGetAccountsResponseParser parser = new MbAsGetAccountsResponseParser();
+            accountList = parser.parse(inputStream);
+            Log.i(TAG, "accountList: \n" + Account.toString(accountList));
+
+            //hide progress bar
+            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
+
+
+
+
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            handleMbFailure(bytes, throwable);
+        }
+
+    }
 }
 
 

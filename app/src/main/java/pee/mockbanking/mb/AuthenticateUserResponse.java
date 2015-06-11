@@ -5,19 +5,24 @@ import android.app.Application;
 /**
  * Created by pvu_asus on 25/05/2015.
  */
-public class AuthenticateUserResponse extends Application {
-    String mChannelSessionId;
+public class AuthenticateUserResponse  {
+    String channelSessionId;
 
     //eg:<ns1:entry ns1:key="ChallengeQuestion" xsi:type="xsd:string">How many TVs are in your home?</ns1:entry>
     String challengeQuestion;
     String challengeQuestionId;
+    String backendUserId;
+
+    public boolean isChallengeQuestion(){
+        return challengeQuestionId != null;
+    }
 
     public String getChannelSessionId() {
-        return mChannelSessionId;
+        return channelSessionId;
     }
 
     public void setChannelSessionId(String channelSessionId) {
-        mChannelSessionId = channelSessionId;
+        this.channelSessionId = channelSessionId;
     }
 
     public String getChallengeQuestion() {
@@ -36,17 +41,17 @@ public class AuthenticateUserResponse extends Application {
         this.challengeQuestionId = challengeQuestionId;
     }
 
+
+
     @Override
     public String toString() {
         return "AuthenticateUserResponse{" +
-                "mChannelSessionId='" + mChannelSessionId + '\'' +
+                "channelSessionId='" + channelSessionId + '\'' +
                 ", challengeQuestion='" + challengeQuestion + '\'' +
                 ", challengeQuestionId='" + challengeQuestionId + '\'' +
                 '}';
     }
 
 
-    public boolean isChallengeQuestion(){
-        return challengeQuestionId != null;
-    }
+
 }

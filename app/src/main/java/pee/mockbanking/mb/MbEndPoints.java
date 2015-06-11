@@ -7,6 +7,7 @@ public class MbEndPoints implements MbEndPointsI {
     private static final String TAG = "MbClient";
 
     private static final String SECURITY_SERVICE ="https://www.atbmobile.com/mbanking/services/SecurityService";
+    private static final String ACCOUNT_SERVICE ="https://www.atbmobile.com/mbanking/services/AccountService";
     private static MbEndPointsI mbEndPoints = null;
 
 
@@ -14,7 +15,7 @@ public class MbEndPoints implements MbEndPointsI {
         if(mbEndPoints != null){
             return mbEndPoints;
         }
-
+        //mbEndPoints = new MbEndPoints();
         mbEndPoints = new MockMbEndPoints();
         return mbEndPoints;
     }
@@ -26,6 +27,10 @@ public class MbEndPoints implements MbEndPointsI {
 
     public String getSsGetAuthenticateUser(){
         return SECURITY_SERVICE;
+    }
+
+    public String getAsGetAccounts(){
+        return ACCOUNT_SERVICE;
     }
 
 }

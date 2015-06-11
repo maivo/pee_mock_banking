@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import pee.mockbanking.ui.AppSession;
 import pee.mockbanking.util.AssetUtils;
 
 /**
@@ -53,6 +54,20 @@ public class MbClient {
         c.set("password", password);
         return c.toString();
     }
+
+    public static String getAsGetAccountsRequestXml(Context context, AppSession appSession){
+        String assetPath = "mb_accountService/accountService_getAccounts_request.cxml";
+        String chunkTemplateContent = AssetUtils.getAssetContent(context, assetPath);
+        //get result
+        Chunk c = new Chunk();
+        c.append(chunkTemplateContent);
+        c.set("userName", appSession.getUserName());
+        c.set("password", appSession.getPassword());
+        c.set("channelSessionId", appSession.getChannelSessionId());
+        return c.toString();
+    }
+
+
 
     public static void post(Context context, String endPoint, String requestXml, ResponseHandlerInterface responseHandler){
         AsyncHttpClient client = new AsyncHttpClient();

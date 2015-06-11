@@ -62,12 +62,11 @@ public class MbSsAuthenticateUserResponseParser {
 
                     case XmlPullParser.END_TAG:
                         if (tagname.equalsIgnoreCase("channelSessionId")) {
-                            // add employee object to list
                             authenticateUserResponse.setChannelSessionId(text);
+                            Log.i(TAG, "tagname.equalsIgnoreCase(\"channelSessionId\"). text: \n" + text);
                             break;
                         }
                         if (tagname.equalsIgnoreCase("ChallengeQuestion")) {
-                            // add employee object to list
                             authenticateUserResponse.setChallengeQuestion(text);
                             break;
                         }
