@@ -6,7 +6,9 @@
     <string name="action_go">Go</string>
     <string name="activity_main_title">Main</string>
     <string name="activity_second_title">Second</string>
-    <string name="activity_login_title">Login</string>
+
+    <string name="account_summary_title">Account Summary</string>
+
 
     <string name="action_go_main">Go Main</string>
     <string name="action_go_second">Go Second</string>

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,7 +57,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         //set title
-        setTitle(R.string.activity_login_title);
+        setTitle(R.string.title);
 
         //
         etUserName = (EditText) findViewById(R.id.etUserName);
@@ -269,14 +270,20 @@ public class LoginActivity extends Activity {
             InputStream inputStream = new ByteArrayInputStream(bytes);
             MbAsGetAccountsResponseParser parser = new MbAsGetAccountsResponseParser();
             accountList = parser.parse(inputStream);
+
+            //add account list to session
+            final AppSession appSession = (AppSession) getApplicationContext();
+            appSession.setAccountList(accountList);
+
             Log.i(TAG, "accountList: \n" + Account.toString(accountList));
 
             //hide progress bar
             ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
 
+            //go AccountSummary activity
+            Intent intent = new Intent(LoginActivity.this, AccountSummaryActivity.class);
 
-
-
+            startActivity(intent);
         }
 
         @Override
@@ -285,6 +292,8 @@ public class LoginActivity extends Activity {
         }
 
     }
+
+
 }
 
 

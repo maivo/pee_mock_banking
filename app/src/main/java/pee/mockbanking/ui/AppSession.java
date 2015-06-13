@@ -2,6 +2,10 @@ package pee.mockbanking.ui;
 
 import android.app.Application;
 
+import java.util.List;
+
+import pee.mockbanking.mb.Account;
+
 /**
  * Created by pvu_asus on 25/05/2015.
  */
@@ -11,6 +15,7 @@ public class AppSession extends Application {
     String channelSessionId;
     String challengeQuestion;
     String challengeQuestionId;
+    List<Account> accountList;
 
     public String getUserName() {
         return userName;
@@ -51,6 +56,14 @@ public class AppSession extends Application {
 
     public void setChallengeQuestionId(String challengeQuestionId) {
         this.challengeQuestionId = challengeQuestionId;
+    }
+
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
     }
 
     @Override

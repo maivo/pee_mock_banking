@@ -13,8 +13,8 @@ public class MockMbEndPoints implements MbEndPointsI {
 
     private void sleep(){
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
+            //Thread.sleep(500);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
