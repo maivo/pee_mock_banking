@@ -1,2 +1,4 @@
-Shows how to store and retrieve data into application context
-evernote: android, how put data inside application context
+
+///////////////////////////////////////////
+//03_add_hive_material_nav_drawer
+try add hive_material_design
