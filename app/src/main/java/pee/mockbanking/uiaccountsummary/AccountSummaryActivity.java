@@ -1,4 +1,4 @@
-package pee.mockbanking.ui;
+package pee.mockbanking.uiaccountsummary;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import pee.mockbanking.R;
 import pee.mockbanking.mb.Account;
+import pee.mockbanking.ui.AppSession;
 
 
 /**

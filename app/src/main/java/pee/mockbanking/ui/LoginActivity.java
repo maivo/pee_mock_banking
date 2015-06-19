@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +33,7 @@ import pee.mockbanking.mb.MbEndPoints;
 import pee.mockbanking.mb.MbFailure;
 import pee.mockbanking.mb.MbClient;
 import pee.mockbanking.mb.MbSsAuthenticateUserResponseParser;
+import pee.mockbanking.uiaccountsummary.AccountSummaryActivity;
 import pee.mockbanking.uiwelcome.WelcomeActivity;
 import pee.mockbanking.util.ActivityUtils;
 
@@ -124,54 +124,59 @@ public class LoginActivity extends Activity {
     public void onSignIn(View view) {
         Log.i(TAG, "inside onSignIn");
 
-        //clear error
-        etUserName.setError(null);
-        etPassword.setError(null);
+        try {
 
-        userName = etUserName.getText().toString();
-        password = etPassword.getText().toString();
-        Log.i(TAG, "userName: "+userName);
-        Log.i(TAG, "password: "+password);
+            //clear error
+            etUserName.setError(null);
+            etPassword.setError(null);
 
-        boolean isUserNameInvalid = false;
-        boolean isPasswordInvalid = false;
+            userName = etUserName.getText().toString();
+            password = etPassword.getText().toString();
+            Log.i(TAG, "userName: " + userName);
+            Log.i(TAG, "password: " + password);
 
-        //validateUserName
-        if (TextUtils.isEmpty(userName)) {
-            Log.i(TAG, "TextUtils.isEmpty(userName)");
-            etUserName.setError(getString(R.string.input_empty));
-            isUserNameInvalid = true;
+            boolean isUserNameInvalid = false;
+            boolean isPasswordInvalid = false;
+
+            //validateUserName
+            if (TextUtils.isEmpty(userName)) {
+                Log.i(TAG, "TextUtils.isEmpty(userName)");
+                etUserName.setError(getString(R.string.input_empty));
+                isUserNameInvalid = true;
+            }
+
+            //validatePassword
+            if (TextUtils.isEmpty(password)) {
+                Log.i(TAG, "TextUtils.isEmpty(password)");
+                etPassword.setError(getString(R.string.input_empty));
+                isPasswordInvalid = true;
+
+            }
+            if (isUserNameInvalid) {
+                etUserName.requestFocus();
+                return;
+            }
+
+            if (isPasswordInvalid) {
+                etPassword.requestFocus();
+                return;
+            }
+            //assert: have valid value for userName and password
+
+            //hide keyboard
+
+
+            // show progress spinner, and start background task to login
+            ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, true);
+
+            //hide keyboard
+            ActivityUtils.hideKeyboard(this);
+
+            Log.i(TAG, "calling handleSecurityServiceGetMultifactorSecurityInfo...");
+            handleSecurityServiceGetMultifactorSecurityInfo();
+        }catch(Exception e){
+            handleMbFailure(null, e);
         }
-
-        //validatePassword
-        if (TextUtils.isEmpty(password)) {
-            Log.i(TAG, "TextUtils.isEmpty(password)");
-            etPassword.setError(getString(R.string.input_empty));
-            isPasswordInvalid = true;
-
-        }
-        if(isUserNameInvalid){
-            etUserName.requestFocus();
-            return;
-        }
-
-        if(isPasswordInvalid){
-            etPassword.requestFocus();
-            return;
-        }
-        //assert: have valid value for userName and password
-
-        //hide keyboard
-
-
-        // show progress spinner, and start background task to login
-        ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, true);
-
-        //hide keyboard
-        ActivityUtils.hideKeyboard(this);
-
-        Log.i(TAG, "calling handleSecurityServiceGetMultifactorSecurityInfo...");
-        handleSecurityServiceGetMultifactorSecurityInfo();
     }
 
 
