@@ -1,12 +1,14 @@
 package pee.mockbanking.ui;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -32,7 +34,9 @@ import pee.mockbanking.mb.MbEndPoints;
 import pee.mockbanking.mb.MbFailure;
 import pee.mockbanking.mb.MbClient;
 import pee.mockbanking.mb.MbSsAuthenticateUserResponseParser;
+import pee.mockbanking.uiwelcome.WelcomeActivity;
 import pee.mockbanking.util.ActivityUtils;
+
 
 
 public class LoginActivity extends Activity {
@@ -57,7 +61,10 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         //set title
-        setTitle(R.string.title);
+        setTitle(R.string.login_title);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //
         etUserName = (EditText) findViewById(R.id.etUserName);
@@ -90,6 +97,17 @@ public class LoginActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Log.i(TAG, "id: "+id);
+
+        if (id == android.R.id.home) {
+            //Log.i(TAG, "id == android.R.id.home");
+            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+            startActivity(intent);
+            //NavUtils.navigateUpFromSameTask(this);
+            finish();
+            overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+            return true;
+        }
         if (id == R.id.action_go) {
             //handleGoSecondActivity();
             return true;

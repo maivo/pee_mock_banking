@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">aMock Banking</string>
+    <string name="login_title">Sign In</string>
 
+    <string name="welcome_title">Welcome</string>
+    <string name="input_empty">Value required</string>
     <string name="hello_world">Hello Mock Banking</string>
     <string name="hello_login">Hello Login</string>
     <string name="action_go">Go</string>
