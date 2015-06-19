@@ -3,15 +3,15 @@ package pee.mockbanking.mb;
 /**
  * Created by pvu_asus on 28/05/2015.
  */
-public class MbEndPoints implements MbEndPointsI {
+public class MbEndPoints implements IMbEndPoints {
     private static final String TAG = "MbClient";
 
     private static final String SECURITY_SERVICE ="https://www.atbmobile.com/mbanking/services/SecurityService";
     private static final String ACCOUNT_SERVICE ="https://www.atbmobile.com/mbanking/services/AccountService";
-    private static MbEndPointsI mbEndPoints = null;
+    private static IMbEndPoints mbEndPoints = null;
 
 
-    public static MbEndPointsI getInstance(){
+    public static IMbEndPoints getInstance(){
         if(mbEndPoints != null){
             return mbEndPoints;
         }

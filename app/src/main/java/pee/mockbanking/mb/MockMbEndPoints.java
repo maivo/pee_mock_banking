@@ -3,7 +3,7 @@ package pee.mockbanking.mb;
 /**
  * Created by pvu_asus on 28/05/2015.
  */
-public class MockMbEndPoints implements MbEndPointsI {
+public class MockMbEndPoints implements IMbEndPoints {
     private static final String TAG = "MbClient";
 
     private static final String BASE_URL ="http://172.20.10.4:8080/mbmock";
