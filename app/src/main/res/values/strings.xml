@@ -16,4 +16,24 @@
     <string name="action_go_main">Go Main</string>
     <string name="action_go_second">Go Second</string>
     <string name="action_settings">Settings</string>
+
+    <!-- navigation drawer start  -->
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_friends">Friends</string>
+    <string name="nav_item_notifications">Messages</string>
+    <string name="nav_item_logout">Log Out</string>
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_friends</item>
+        <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_logout</item>
+    </string-array>
+    <string name="title_messages">Messages</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_home">Home4</string>
+    <!-- navigation drawer end  -->
+
 </resources>

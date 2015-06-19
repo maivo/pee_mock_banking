@@ -36,6 +36,7 @@ import pee.mockbanking.mb.MbEndPoints;
 import pee.mockbanking.mb.MbFailure;
 import pee.mockbanking.mb.MbSsAuthenticateUserResponseParser;
 import pee.mockbanking.ui.LoginActivity;
+import pee.mockbanking.uimain.MainActivity;
 import pee.mockbanking.util.ActivityUtils;
 
 
@@ -86,6 +87,13 @@ public class WelcomeActivity extends Activity {
                 Log.i(TAG, "inside onClick");
                 if(position == 0){
                     Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+                    finish();
+                    return;
+                }
+                if(position == 1){
+                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
                     finish();
