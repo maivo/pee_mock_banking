@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         Log.i(TAG, "inside onCreate");
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Log.i(TAG, "mToolbar: "+mToolbar);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

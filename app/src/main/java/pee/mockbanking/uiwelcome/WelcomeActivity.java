@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -40,10 +42,11 @@ import pee.mockbanking.uimain.MainActivity;
 import pee.mockbanking.util.ActivityUtils;
 
 
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
 
+    private Toolbar mToolbar;
 
     // List items
     ListView lvTitleCollection;
@@ -58,6 +61,10 @@ public class WelcomeActivity extends Activity {
 
         //set title
         setTitle(R.string.welcome_title);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
 
         titleCollection = new ArrayList<String>();
 
