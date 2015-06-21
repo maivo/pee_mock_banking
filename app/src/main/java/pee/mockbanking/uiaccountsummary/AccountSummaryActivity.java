@@ -1,6 +1,7 @@
 package pee.mockbanking.uiaccountsummary;
 
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,7 @@ import pee.mockbanking.ui.AppSession;
 /**
  * Created by pvu_asus on 11/06/2015.
  */
-public class AccountSummaryActivity extends Activity{
+public class AccountSummaryActivity extends ActionBarActivity{
     private static final String TAG = "AccountSummaryActivity";
 
     @Override
@@ -26,7 +27,8 @@ public class AccountSummaryActivity extends Activity{
         setContentView(R.layout.activity_account_summary);
 
         //show back button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //set title
         setTitle(R.string.account_summary_title);

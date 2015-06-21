@@ -1,8 +1,8 @@
 package pee.mockbanking.ui;
 
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,12 +34,13 @@ import pee.mockbanking.mb.MbFailure;
 import pee.mockbanking.mb.MbClient;
 import pee.mockbanking.mb.MbSsAuthenticateUserResponseParser;
 import pee.mockbanking.uiaccountsummary.AccountSummaryActivity;
+import pee.mockbanking.uimain.MainActivity;
 import pee.mockbanking.uiwelcome.WelcomeActivity;
 import pee.mockbanking.util.ActivityUtils;
 
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends ActionBarActivity {
 
     private static final String TAG = "LoginActivity";
 
@@ -63,8 +64,21 @@ public class LoginActivity extends Activity {
         //set title
         setTitle(R.string.login_title);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                finish();
+                return;
+            }
+        });
+
+        //mToolbar.setDisplayHomeAsUpEnabled(true);
 
         //
         etUserName = (EditText) findViewById(R.id.etUserName);
@@ -305,8 +319,10 @@ public class LoginActivity extends Activity {
 
             //go AccountSummary activity
             Intent intent = new Intent(LoginActivity.this, AccountSummaryActivity.class);
-
             startActivity(intent);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            finish();
+            return;
         }
 
         @Override
