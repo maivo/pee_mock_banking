@@ -317,8 +317,8 @@ public class LoginActivity extends ActionBarActivity {
             //hide progress bar
             ActivityUtils.showProgress(getApplicationContext(), progressView, loginFormView, false);
 
-            //go AccountSummary activity
-            Intent intent = new Intent(LoginActivity.this, AccountSummaryActivity.class);
+            //go Main activity
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             finish();

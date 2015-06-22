@@ -6,7 +6,7 @@ package pee.mockbanking.mb;
 public class MockMbEndPoints implements IMbEndPoints {
     private static final String TAG = "MbClient";
 
-    private static final String BASE_URL ="http://192.168.1.71:8080/mbmock";
+    private static final String BASE_URL ="http://172.20.10.4:8080/mbmock";
     private static MockMbEndPoints mbEndPoints = null;
 
 

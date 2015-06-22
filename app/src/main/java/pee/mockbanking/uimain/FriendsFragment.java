@@ -2,6 +2,7 @@ package pee.mockbanking.uimain;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import pee.mockbanking.R;
 
 
 public class FriendsFragment extends Fragment {
+    private static final String TAG = "FriendsFragment";
 
 
     public FriendsFragment() {
@@ -19,6 +21,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "inside onCreate");
 
     }
 
