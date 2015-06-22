@@ -16,14 +16,15 @@
         <activity
             android:name=".ui.LoginActivity"
             android:parentActivityName=".uiwelcome.WelcomeActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
             >
         </activity>
         <activity
             android:name=".uiaccountsummary.AccountSummaryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".uimain.MainActivity">

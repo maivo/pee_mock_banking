@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+
+
+    <!-- Rightend Arrow -->
+    <ImageView
+        android:id="@+id/imageView1"
+        android:contentDescription="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/arrow" />
+
+    <!-- City-->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="5dip"
+        android:layout_centerVertical="true"
+        android:paddingBottom ="9dip"
+        android:text="title"
+        android:textColor="#040404"
+        android:textSize="25dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
+    
+    <!-- Weather Information-->
+
+    <TextView
+        android:id="@+id/tvBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_alignLeft="@+id/tvTitle"
+        android:paddingTop="15dip"
+        android:layout_centerHorizontal="true"
+        android:text="Balance:"
+        android:textColor="#343434"
+        android:textSize="15dip" />
+
+    <TextView
+        android:id="@+id/tvAvailableBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBalance"
+        android:layout_alignLeft="@+id/tvBalance"
+        android:paddingTop="2dip"
+        android:layout_centerHorizontal="true"
+        android:text="Available Balance:"
+        android:textColor="#343434"
+        android:textSize="15dip" />
+
+
+
+</RelativeLayout>

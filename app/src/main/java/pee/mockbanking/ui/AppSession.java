@@ -15,6 +15,8 @@ public class AppSession extends Application {
     String channelSessionId;
     String challengeQuestion;
     String challengeQuestionId;
+
+    Account account;
     List<Account> accountList;
 
     public String getUserName() {
@@ -62,8 +64,19 @@ public class AppSession extends Application {
         return accountList;
     }
 
+
+
     public void setAccountList(List<Account> accountList) {
         this.accountList = accountList;
+    }
+
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override
@@ -74,6 +87,7 @@ public class AppSession extends Application {
                 ", channelSessionId='" + channelSessionId + '\'' +
                 ", challengeQuestion='" + challengeQuestion + '\'' +
                 ", challengeQuestionId='" + challengeQuestionId + '\'' +
+                ", account='" + account + '\'' +
                 '}';
     }
 }
